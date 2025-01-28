@@ -1,0 +1,80 @@
+[{
+    "dato" : "25.01.2025",
+    "kvitteringsnummer" : "123456",
+    "kjede" : null,
+    "butikknavn" : "MENY Lillo Gård",
+    "totaltBelop" : "86.80",
+    "korttype" : "Bankkonto",
+    "kanal" : null,
+    "varelinjer" : [ {
+      "varenavn" : "HAMBURGERBRØD BRIOCHE M/SESAM 4STK 310G",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "42.90"
+    }, {
+      "varenavn" : "WORCESTER SAUCE 150ML HEINZ",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "43.90"
+    } ]
+  }, {
+    "dato" : "21.01.2025",
+    "kvitteringsnummer" : "123457",
+    "kjede" : null,
+    "butikknavn" : "KIWI 419 Storo",
+    "totaltBelop" : "708.67",
+    "korttype" : "Digitalt Trumfkort",
+    "kanal" : null,
+    "varelinjer" : [ {
+      "varenavn" : "COCA-COLA ZERO 1,5LX4 FL",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "74.90"
+    }, {
+      "varenavn" : "TAST PANT UTGÅENDE SALG AV EMB",
+      "vareAntallVekt" : "2.000",
+      "vareBelop" : "15.00"
+    }, {
+      "varenavn" : "KYLLINGFILET 2KG FIRST PRICE",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "221.00"
+    }, {
+      "varenavn" : "KJØTTDEIG 14% FETT 400G FIRST PRICE",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "64.90"
+    }, {
+      "varenavn" : "ZEROH! SITRON&LIME 0,8L",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "32.10"
+    }, {
+      "varenavn" : "RUGSPRØ 200G WASA",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "18.90"
+    }, {
+      "varenavn" : "APETINA ORIGINAL WHITE CHEESE 200G ARLA",
+      "vareAntallVekt" : "2.000",
+      "vareBelop" : "74.80"
+    }, {
+      "varenavn" : "NESCAFE GULL 100G REFILL",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "49.90"
+    }, {
+      "varenavn" : "MAKRELL GROVREVET I TOMAT 100G",
+      "vareAntallVekt" : "6.000",
+      "vareBelop" : "89.40"
+    }, {
+      "varenavn" : "BURGEROST M/CHEDDARSMAK 200G ELDORADO",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "33.90"
+    }, {
+      "varenavn" : "MAJONES EKTE 160G TUBE MILLS",
+      "vareAntallVekt" : "1.000",
+      "vareBelop" : "21.90"
+    }, {
+      "varenavn" : "TOMATER KG",
+      "vareAntallVekt" : "0.180",
+      "vareBelop" : "6.28"
+    }, {
+      "varenavn" : "LØK GUL PR KG FIRST PRICE",
+      "vareAntallVekt" : "0.260",
+      "vareBelop" : "5.69"
+    } ]
+}
+]
