@@ -13,7 +13,7 @@ from writers.vare_aggregate_csv_parser import VareAggregateCsvWriter
 def parse_args():
     parser = argparse.ArgumentParser(description="Trumf kvitteringsanalyzer")
     parser.add_argument("-input", type=str, help="Path til JSON-filen med kvitteringer", default="./assets/kvitteringer.json")
-    parser.add_argument("-output", type=str, help="Katalog for å lagre utdatafilen", default="./")
+    parser.add_argument("-output", type=str, help="Katalog for å lagre utdatafilen", default="./assets/")
     parser.add_argument("-type", type=str, choices=["csv", "excel"], help="Filtype for utdata (default: csv)", default="csv")
     parser.add_argument("-from", dest="date_from", type=str, help="Startdato (format: YYYY-MM-DD)", default=None)
     parser.add_argument("-to", dest="date_to", type=str, help="Sluttdato (format: YYYY-MM-DD)", default=None)
