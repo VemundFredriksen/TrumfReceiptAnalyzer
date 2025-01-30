@@ -5,10 +5,8 @@ from analyzers.butikk_aggregator import ButikkAggregator
 from analyzers.vare_aggregator import VareAggregator
 from utils.datofiltrer_kvitteringer import datofiltrer_kvitteringer
 from readers.kvittering_json_reader import TrumfReader
-from writers.butikk_aggregate_csv_parser import ButikkAggregateCsvWriter
-from writers.csv_writer import CsvWriter
-from writers.excel_writer import ExcelExporter
-from writers.vare_aggregate_csv_parser import VareAggregateCsvWriter
+from exporters.excel_writer import ExcelExporter
+from exporters.csv_exporter import CsvExporter
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Trumf kvitteringsanalyzer")
@@ -31,19 +29,11 @@ def main():
     butikk_aggregates = ButikkAggregator().aggregate_by_store(kvitteringer)
 
     if args.type == "csv":
-        butikk_aggregate_csv = ButikkAggregateCsvWriter().butikk_aggregates_to_csv(butikk_aggregates)
-        vare_aggregate_csv = VareAggregateCsvWriter().vare_aggregater_til_csv(vare_aggregates)
-        
-        vare_output_path = Path(args.output) / "varer.csv"
-        butikk_output_path = Path(args.output) / "butikker.csv"
-        
-        csv_writer = CsvWriter()
-        
-        csv_writer.lagre_csv_til_fil(vare_aggregate_csv, vare_output_path)
-        print(f"CSV-fil for varer lagret til: {vare_output_path}")
-            
-        csv_writer.lagre_csv_til_fil(butikk_aggregate_csv, butikk_output_path)
-        print(f"CSV-fil for butikker lagret til: {butikk_output_path}")
+        result_directory =  Path(args.output)
+        exporter = CsvExporter(butikk_aggregates, vare_aggregates, result_directory)
+        exporter.export()
+        print(f"CSV exported to {result_directory}")
+
     if args.type == "excel":
         writer = ExcelExporter(Path(args.output) / "rapport.xls")
         writer.lag_rapport(butikk_aggregates, vare_aggregates)
