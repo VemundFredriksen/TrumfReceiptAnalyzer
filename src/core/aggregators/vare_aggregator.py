@@ -1,16 +1,19 @@
 from dataclasses import dataclass
 from typing import List, Dict
 from collections import defaultdict
+from aggregators.aggregator import Aggregator
 from models.trumf_kvittering import Kvittering
 from models.vare_aggregate import VareAggregate
 
-@dataclass
-class VareAggregator:
+class VareAggregator(Aggregator):
     
-    def aggregate_by_item(self, kvitteringer: List[Kvittering]) -> List[VareAggregate]:
+    def __init__(self, kvitteringer: List[Kvittering]):
+        self.kvitteringer = kvitteringer
+        
+    def aggregate(self) -> List[Kvittering]:
         vare_map: Dict[str, VareAggregate] = defaultdict(lambda: VareAggregate("", 0, 0.0))
 
-        for kvittering in kvitteringer:
+        for kvittering in self.kvitteringer:
             for vare in kvittering.varelinjer:
                 if vare.varenavn not in vare_map:
                     vare_map[vare.varenavn] = VareAggregate(vare.varenavn, 0, 0.0)

@@ -1,15 +1,18 @@
 from dataclasses import dataclass
 from typing import List
+from aggregators.aggregator import Aggregator
 from models.trumf_kvittering import Kvittering
 from models.butikk_aggregate import ButikkAggregate
 
-@dataclass
-class ButikkAggregator:
+class ButikkAggregator(Aggregator):
     
-    def aggregate_by_store(self, kvitteringer: List[Kvittering]) -> List[ButikkAggregate]:
+    def __init__(self, kvitteringer: List[Kvittering]):
+        self.kvitteringer = kvitteringer
+    
+    def aggregate(self) -> List[ButikkAggregate]:
         butikk_map = {}
 
-        for kvittering in kvitteringer:
+        for kvittering in self.kvitteringer:
             butikknavn = kvittering.butikknavn
             belop = float(kvittering.totaltBelop)
 
