@@ -37,11 +37,13 @@ def main():
         category_reader = CategoryReader()
         categories = list(map(lambda c: category_reader.read(c), args.cat))
         
-        parser = CategoryAggregator()
+        
         for k in categories:
-            parsed = parser.filtrer(k, item_aggregates)
+            parser = CategoryAggregator(k, item_aggregates)
+            parsed = parser.aggregate()
             x = 0
-        category_aggregates = (list(map(lambda k: parser.filtrer(k, item_aggregates), categories)))
+            
+        category_aggregates = (list(map(lambda k: parser.aggregate(), categories)))
 
     if args.type == "csv":
         result_directory =  Path(args.output)
