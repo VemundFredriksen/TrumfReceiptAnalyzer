@@ -1,46 +1,46 @@
 from typing import List
 import csv
 import io
-from models.butikk_aggregate import ButikkAggregate
-from models.vare_aggregate import VareAggregate
+from models.store_aggregate import StoreAggregate
+from models.item_aggregate import ItemAggregate
 
 class CsvExporter:
     def __init__(self, 
-                 butikk_aggregates: List[ButikkAggregate], 
-                 vare_aggregates: List[VareAggregate],
+                 store_aggregates: List[StoreAggregate], 
+                 item_aggregates: List[ItemAggregate],
                  result_directory: str):
         
-        self.butikk_aggregates = butikk_aggregates
-        self.vare_aggregates = vare_aggregates
+        self.store_aggregates = store_aggregates
+        self.item_aggregates = item_aggregates
         self.result_directory = result_directory
         
     def export(self):
-        self.__export_butikk_aggregates__()
-        self.__export_vare_aggregates__()
+        self.__export_store_aggregates__()
+        self.__export_item_aggregates__()
 
-    def __export_butikk_aggregates__(self):
+    def __export_store_aggregates__(self):
         output = io.StringIO()
         writer = csv.writer(output, delimiter=';')
         
         writer.writerow(["Butikknavn", "Totalt Beløp", "Antall Kvitteringer"])
         
-        for aggregat in self.butikk_aggregates:
-            belop = str(aggregat.totalt_belop).replace('.', ',')
-            antall = str(aggregat.antall_kvitteringer).replace('.', ',')
-            writer.writerow([aggregat.butikknavn, belop, antall])
+        for aggregate in self.store_aggregates:
+            total_store_sum = str(aggregate.total_sum).replace('.', ',')
+            count = str(aggregate.receipt_count).replace('.', ',')
+            writer.writerow([aggregate.store_name, total_store_sum, count])
         
         self.__write_csv__(output, f"{self.result_directory}/butikker.csv")
     
-    def __export_vare_aggregates__(self):
+    def __export_item_aggregates__(self):
         output = io.StringIO()
         writer = csv.writer(output)
         
         writer.writerow(["Varenavn", "Total Antall", "Total Beløp"])
         
-        for aggregat in self.vare_aggregates:
-            belop = str(aggregat.total_belop).replace('.', ',')
-            antall = str(aggregat.total_antall).replace('.', ',')
-            writer.writerow([aggregat.varenavn, antall, belop])
+        for aggregate in self.item_aggregates:
+            total_item_sum = str(aggregate.total_sum).replace('.', ',')
+            count = str(aggregate.item_count).replace('.', ',')
+            writer.writerow([aggregate.name, count, total_item_sum])
         
         self.__write_csv__(output, f"{self.result_directory}/varer.csv")
     

@@ -1,18 +1,18 @@
-from models.trumf_kvittering import Kvittering
+from models.trumf_receipt import Receipt
 from datetime import datetime
 from typing import List, Optional
 
 
-def datofiltrer_kvitteringer(kvitteringer: List[Kvittering], date_from: Optional[str], date_to: Optional[str]) -> List[Kvittering]:
+def filter_receipts_by_date_interval(receipts: List[Receipt], date_from: Optional[str], date_to: Optional[str]) -> List[Receipt]:
     if not date_from and not date_to:
-        return kvitteringer
+        return receipts
 
     date_from = datetime.strptime(date_from, "%Y-%m-%d") if date_from else None
     date_to = datetime.strptime(date_to, "%Y-%m-%d") if date_to else None
 
-    filtrert = []
-    for kvittering in kvitteringer:
-        kvittering_dato = datetime.strptime(kvittering.dato, "%d.%m.%Y")
-        if (not date_from or kvittering_dato >= date_from) and (not date_to or kvittering_dato <= date_to):
-            filtrert.append(kvittering)
-    return filtrert
+    filtered = []
+    for receipt in receipts:
+        receipt_date = datetime.strptime(receipt.dato, "%d.%m.%Y")
+        if (not date_from or receipt_date >= date_from) and (not date_to or receipt_date <= date_to):
+            filtered.append(receipt)
+    return filtered

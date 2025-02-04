@@ -1,12 +1,12 @@
 import argparse
 from pathlib import Path
 
-from aggregators.butikk_aggregator import ButikkAggregator
-from aggregators.vare_aggregator import VareAggregator
-from aggregators.kategori_filterer import KategoriFiltrer
-from readers.kategori_reader import KategoriReader
-from utils.datofiltrer_kvitteringer import datofiltrer_kvitteringer
-from readers.kvittering_json_reader import TrumfReader
+from aggregators.butikk_aggregator import StoreAggregator
+from aggregators.vare_aggregator import ItemAggregator
+from aggregators.kategori_filterer import CategoryAggregator
+from readers.category_reader import CategoryReader
+from utils.datofiltrer_kvitteringer import filter_receipts_by_date_interval
+from readers.trumf_receipt_json_reader import TrumfReceiptJsonReader
 from exporters.excel_writer import ExcelExporter
 from exporters.csv_exporter import CsvExporter
 
@@ -23,35 +23,35 @@ def parse_args():
 def main():
     args = parse_args()
  
-    trumf_reader = TrumfReader()
-    kvitteringer = trumf_reader.read(Path(args.input))
+    json_reader = TrumfReceiptJsonReader()
+    receipts = json_reader.read(Path(args.input))
 
-    kvitteringer = datofiltrer_kvitteringer(kvitteringer, args.date_from, args.date_to)
+    receipts = filter_receipts_by_date_interval(receipts, args.date_from, args.date_to)
 
-    vare_aggregates = VareAggregator(kvitteringer).aggregate()
-    butikk_aggregates = ButikkAggregator(kvitteringer).aggregate()
+    item_aggregates = ItemAggregator(receipts).aggregate()
+    store_aggregates = StoreAggregator(receipts).aggregate()
     
     category_aggregates = []
     
     if args.cat is not None:
-        kategori_reader = KategoriReader()
-        kategorier = list(map(lambda c: kategori_reader.read(c), args.cat))
+        category_reader = CategoryReader()
+        categories = list(map(lambda c: category_reader.read(c), args.cat))
         
-        parser = KategoriFiltrer()
-        for k in kategorier:
-            parsed = parser.filtrer(k, vare_aggregates)
+        parser = CategoryAggregator()
+        for k in categories:
+            parsed = parser.filtrer(k, item_aggregates)
             x = 0
-        category_aggregates = (list(map(lambda k: parser.filtrer(k, vare_aggregates), kategorier)))
+        category_aggregates = (list(map(lambda k: parser.filtrer(k, item_aggregates), categories)))
 
     if args.type == "csv":
         result_directory =  Path(args.output)
-        exporter = CsvExporter(butikk_aggregates, vare_aggregates, result_directory)
+        exporter = CsvExporter(store_aggregates, item_aggregates, result_directory)
         exporter.export()
         print(f"CSV exported to {result_directory}")
 
     if args.type == "excel":
         writer = ExcelExporter(Path(args.output) / "rapport.xls")
-        writer.lag_rapport(butikk_aggregates, vare_aggregates)
+        writer.export(store_aggregates, item_aggregates)
 
 if __name__ == "__main__":
     main()

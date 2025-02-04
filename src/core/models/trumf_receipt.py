@@ -2,13 +2,13 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 @dataclass
-class Varelinje:
+class ItemLine:
     varenavn: str
     vareAntallVekt: str
     vareBelop: str
 
 @dataclass
-class Kvittering:
+class Receipt:
     dato: str
     kvitteringsnummer: str
     kjede: Optional[str]
@@ -16,4 +16,4 @@ class Kvittering:
     totaltBelop: str
     korttype: str
     kanal: Optional[str]
-    varelinjer: List[Varelinje]
+    varelinjer: List[ItemLine]

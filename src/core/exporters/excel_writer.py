@@ -4,27 +4,26 @@ from openpyxl.utils import get_column_letter
 from pathlib import Path
 from typing import List
 
-from models.butikk_aggregate import ButikkAggregate
-from models.vare_aggregate import VareAggregate
+from models.store_aggregate import StoreAggregate
+from models.item_aggregate import ItemAggregate
 
-@dataclass
 class ExcelExporter:
     output_path: Path
 
-    def lag_rapport(self, butikk_aggregater: List[ButikkAggregate], vare_aggregater: List[VareAggregate]):
+    def export(self, store_aggregates: List[StoreAggregate], item_aggregates: List[ItemAggregate]):
         wb = Workbook()
 
-        butikk_sheet = wb.active
-        butikk_sheet.title = "Butikker"
-        self._skriv_til_ark(butikk_sheet, butikk_aggregater, ["Butikknavn", "Totalt beløp", "Antall kvitteringer"])
+        store_sheet = wb.active
+        store_sheet.title = "Butikker"
+        self.__write_to_sheet__(store_sheet, store_aggregates, ["Butikknavn", "Totalt beløp", "Antall kvitteringer"])
 
-        vare_sheet = wb.create_sheet(title="Varer")
-        self._skriv_til_ark(vare_sheet, vare_aggregater, ["Varenavn", "Total antall", "Total beløp"])
+        item_sheet = wb.create_sheet(title="Varer")
+        self.__write_to_sheet__(item_sheet, item_aggregates, ["Varenavn", "Total antall", "Total beløp"])
 
         wb.save(self.output_path)
         print(f"Excel-fil lagret til: {self.output_path}")
 
-    def _skriv_til_ark(self, sheet, data, headers):
+    def __write_to_sheet__(self, sheet, data, headers):
         for col, header in enumerate(headers, start=1):
             sheet.cell(row=1, column=col, value=header)
 

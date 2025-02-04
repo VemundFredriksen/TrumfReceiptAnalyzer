@@ -2,23 +2,23 @@ from dataclasses import dataclass
 from typing import List, Dict
 from collections import defaultdict
 from aggregators.aggregator import Aggregator
-from models.trumf_kvittering import Kvittering
-from models.vare_aggregate import VareAggregate
+from models.trumf_receipt import Receipt
+from models.item_aggregate import ItemAggregate
 
-class VareAggregator(Aggregator):
+class ItemAggregator(Aggregator):
     
-    def __init__(self, kvitteringer: List[Kvittering]):
-        self.kvitteringer = kvitteringer
+    def __init__(self, receipts: List[Receipt]):
+        self.receipts = receipts
         
-    def aggregate(self) -> List[Kvittering]:
-        vare_map: Dict[str, VareAggregate] = defaultdict(lambda: VareAggregate("", 0, 0.0))
+    def aggregate(self) -> List[Receipt]:
+        item_map: Dict[str, ItemAggregate] = defaultdict(lambda: ItemAggregate("", 0, 0.0))
 
-        for kvittering in self.kvitteringer:
-            for vare in kvittering.varelinjer:
-                if vare.varenavn not in vare_map:
-                    vare_map[vare.varenavn] = VareAggregate(vare.varenavn, 0, 0.0)
+        for receipt in self.receipts:
+            for item in receipt.varelinjer:
+                if item.varenavn not in item_map:
+                    item_map[item.varenavn] = ItemAggregate(item.varenavn, 0, 0.0)
 
-                vare_map[vare.varenavn].total_antall += float(vare.vareAntallVekt)
-                vare_map[vare.varenavn].total_belop += float(vare.vareBelop)
+                item_map[item.varenavn].item_count += float(item.vareAntallVekt)
+                item_map[item.varenavn].total_sum += float(item.vareBelop)
 
-        return list(vare_map.values())
+        return list(item_map.values())

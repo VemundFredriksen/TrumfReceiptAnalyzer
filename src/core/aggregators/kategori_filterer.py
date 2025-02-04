@@ -1,20 +1,20 @@
 from typing import List
-from models.kategori_aggregate import KategoriAggregate
-from models.vare_aggregate import VareAggregate
-from models.kategori import Kategori
+from models.category_aggregate import CategoryAggregate
+from models.item_aggregate import ItemAggregate
+from models.category import Category
 
 
-class KategoriFiltrer:
+class CategoryAggregator:
     
-    def filtrer(self, kategori: Kategori, vare_aggregates: List[VareAggregate]) -> KategoriAggregate:
-        aggregates = []
-        for varekategori in kategori.kategorier:
-            included_varer = list(filter(lambda v: v.varenavn in varekategori.inkluderte_varer, vare_aggregates)) 
-            totalsum = sum(map(lambda k: k.total_belop,  included_varer))
-            antall = sum(map(lambda k: k.total_antall, included_varer))
+    def filtrer(self, category: Category, item_aggregates: List[ItemAggregate]) -> CategoryAggregate:
+        category_aggregates = []
+        for item_category in category.categories:
+            included_items = list(filter(lambda v: v.name in item_category.included_items, item_aggregates)) 
+            total_category_sum = sum(map(lambda k: k.total_sum,  included_items))
+            category_count = sum(map(lambda k: k.item_count, included_items))
             
-            aggregates.append(KategoriAggregate(varekategori.navn, totalsum, antall))
-            if kategori.exclusive:
-                vare_aggregates = list(filter(lambda v: v.varenavn not in varekategori.inkluderte_varer, vare_aggregates))
+            category_aggregates.append(CategoryAggregate(item_category.name, total_category_sum, category_count))
+            if category.exclusive:
+                item_aggregates = list(filter(lambda v: v.name not in item_category.included_items, item_aggregates))
             
-        return aggregates
+        return category_aggregates
